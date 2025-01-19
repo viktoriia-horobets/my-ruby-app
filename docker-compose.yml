@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: viktoriia
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: ruby-getting-started_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: ["rails", "server", "-b", "0.0.0.0"]
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://viktoriia:secret@db:5432/ruby-getting-started_development
+
+volumes:
+  db_data:
