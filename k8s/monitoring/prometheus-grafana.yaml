@@ -1,0 +1,10 @@
+prometheus:
+  service:
+    type: LoadBalancer
+
+grafana:
+  adminPassword: "admin" 
+  service:
+    type: LoadBalancer
+  ingress:
+    enabled: false
