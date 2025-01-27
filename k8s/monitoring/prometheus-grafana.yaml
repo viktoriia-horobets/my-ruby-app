@@ -1,10 +1,49 @@
 prometheus:
   service:
     type: LoadBalancer
+  prometheusSpec:
+    retention: 10d
+    scrapeInterval: "15s"
+  resources:
+    requests:
+      memory: "400Mi"
+      cpu: "100m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
 
 grafana:
-  adminPassword: "admin" 
+  adminPassword: "admin"
   service:
     type: LoadBalancer
   ingress:
     enabled: false
+  persistence:
+    enabled: true
+    size: 10Gi
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+alertmanager:
+  enabled: true
+  service:
+    type: LoadBalancer
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+
+nodeExporter:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true
